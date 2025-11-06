@@ -12,13 +12,13 @@ export function FavoriteProvider({ children }: { children: React.ReactNode }) {
         return saved ? JSON.parse(saved) : [];
     });
 
-    const toggleFavorite = (id: string) => {
+    const toggleFavorite = (name: string) => {
         setFavorites(prev => {
             let newFavs;
-            if (prev.includes(id)) {
-                newFavs = prev.filter(f => f !== id);
+            if (prev.includes(name)) {
+                newFavs = prev.filter(f => f !== name);
             } else {
-                newFavs = [...prev, id];
+                newFavs = [...prev, name];
             }
             localStorage.setItem("favorites", JSON.stringify(newFavs));
             return newFavs;

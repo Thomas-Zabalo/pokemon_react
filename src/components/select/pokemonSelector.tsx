@@ -1,5 +1,5 @@
-import { type ChangeEvent, type FormEvent, useState, useEffect, useRef } from "react";
-import { useTheme } from "./themeProvider";
+import { type ChangeEvent, type FormEvent, useState, useEffect, useRef, useMemo } from "react";
+import { useTheme } from "../provider/themeProvider";
 
 interface PokemonSelectorProps {
     handlePokemonSelect: (pokemon: string | undefined) => void;
@@ -14,7 +14,6 @@ export function PokemonSelector({ handlePokemonSelect }: PokemonSelectorProps) {
 
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    // Charger la liste complète des Pokémon
     useEffect(() => {
         const fetchPokemonList = async () => {
             try {
@@ -63,7 +62,6 @@ export function PokemonSelector({ handlePokemonSelect }: PokemonSelectorProps) {
         setShowSuggestions(false);
     };
 
-    // Fermer la liste si clic à l'extérieur
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
@@ -76,41 +74,40 @@ export function PokemonSelector({ handlePokemonSelect }: PokemonSelectorProps) {
         };
     }, []);
 
-    const handleFocus = () => {
-        if (pokemon.length >= 2) {
-            const filtered = pokemonList.filter((name) =>
+    const filteredSuggestions = useMemo(() => {
+        if (pokemon.length < 2) return [];
+        return pokemonList
+            .filter((name) =>
                 name.toLowerCase().includes(pokemon.toLowerCase())
-            ).slice(0, 10);
-            setSuggestions(filtered);
-            setShowSuggestions(true);
-        }
-    };
+            )
+            .slice(0, 10);
+    }, [pokemon, pokemonList]);
 
-    const bgColor = theme === "dark"
-        ? "bg-gray-50 text-gray-600 placeholder-gray-400 hover:bg-gray-300"
-        : "bg-gray-300 placeholder-gray-400 hover:bg-gray-200";
+    const bgColor =
+        theme === "dark"
+            ? "bg-zinc-800 text-white placeholder-gray-400 border-gray-600 shadow-md"
+            : "bg-white text-black placeholder-gray-500 border-gray-300 shadow-md";
 
     return (
         <div className="py-6 relative" ref={wrapperRef}>
             <form onSubmit={searchPokemon} className="flex gap-4">
                 <input
                     type="text"
-                    className={`${bgColor} text-black text-sm rounded-lg block w-full p-2.5`}
+                    className={`${bgColor} text-black text-sm rounded-lg block w-full p-2.5  transition-all duration-300`}
                     value={pokemon}
                     onChange={handleChange}
-                    onFocus={handleFocus}
                     placeholder="Entrez un Pokémon"
                 />
                 <button
                     type="submit"
-                    className={`${bgColor} text-black cursor-pointer font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center`}
+                    className={`${bgColor} cursor-pointer font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center  transition-all duration-300`}
                 >
                     Rechercher
                 </button>
             </form>
 
-            {showSuggestions && suggestions.length > 0 && (
-                <ul className={`${bgColor} absolute z-10 w-full mt-1 max-h-60 overflow-y-auto rounded shadow`}>
+            {showSuggestions && filteredSuggestions.length > 0 && (
+                <ul className={`${bgColor} absolute z-10 w-full mt-1 max-h-60 overflow-y-auto rounded shadow  transition-all duration-300`}>
                     {suggestions.map((name) => (
                         <li
                             key={name}

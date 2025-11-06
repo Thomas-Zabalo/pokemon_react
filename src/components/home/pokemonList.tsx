@@ -1,18 +1,31 @@
-import { useFetch } from "../hooks/hook.tsx";
-import { useState } from "react";
+import { useFetch } from "../../hooks/hook.tsx";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { PokemonCard } from "./pokemonCard.tsx";
-import { useTheme } from "./themeProvider.tsx";
+import { useTheme } from "../provider/themeProvider.tsx";
 
 export function PokemonList() {
     const [offset, setOffset] = useState(0);
     const { theme } = useTheme();
-    const limit = 21;
-    const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
+    const limit = 20;
 
-    const handleNext = () => setOffset((prev) => prev + limit);
-    const handlePrev = () => setOffset((prev) => Math.max(prev - limit, 0));
+    const url = useMemo(() => {
+        return `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
+    }, [offset, limit]);
+
+    useEffect(() => {
+        console.log(url);
+    }, [url])
+
+    const handlePrev = useCallback(() => {
+        setOffset((prev) => Math.max(prev - limit, 0));
+    }, [offset]);
+
+    const handleNext = useCallback(() => {
+        setOffset((prev) => prev + limit);
+    }, [offset]);
 
     const textColor = theme === "dark" ? "text-white" : "text-black";
+
     const textColorHover = theme === "dark" ? "  hover:text-white" : "hover:text-black";
 
     const { data, loading } = useFetch(url);
@@ -31,7 +44,7 @@ export function PokemonList() {
                 </div>
             ) : data && data.results ? (
                 <>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         {data.results.map((p: any, i: number) => {
                             const parts = p.url.split("/").filter(Boolean);
                             const id = parts[parts.length - 1];

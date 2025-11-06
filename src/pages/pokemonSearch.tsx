@@ -1,17 +1,22 @@
-import { useState } from "react";
-import { PokemonSelector } from "../components/pokemonSelector";
+import { useCallback, useMemo, useState } from "react";
+import { PokemonSelector } from "../components/select/pokemonSelector";
 import { useFetch } from "../hooks/hook";
-import { useTheme } from "../components/themeProvider";
-import { PokemonCard } from "../components/pokemonCard";
+import { useTheme } from "../components/provider/themeProvider";
+import { PokemonCard } from "../components/home/pokemonCard";
 
 export function Search() {
     const [selectedPokemon, setSelectedPokemon] = useState<string>();
     const { theme } = useTheme();
-    const url = selectedPokemon ? `https://pokeapi.co/api/v2/pokemon/${selectedPokemon}` : "";
 
-    const handlePokemonSelect = (pokemon: string | undefined) => {
+    const url = useMemo(() => {
+        return selectedPokemon
+            ? `https://pokeapi.co/api/v2/pokemon/${selectedPokemon}`
+            : "";
+    }, [selectedPokemon]);
+
+    const handlePokemonSelect = useCallback((pokemon: string | undefined) => {
         setSelectedPokemon(pokemon);
-    }
+    }, []);
 
     const textColor = theme === "dark" ? "text-white" : "text-black";
 
@@ -44,7 +49,7 @@ export function Search() {
                 const id = parts ? parts[parts.length - 1] : data.id;
 
                 return (
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         <PokemonCard
                             name={data.name}
                             id={id}
