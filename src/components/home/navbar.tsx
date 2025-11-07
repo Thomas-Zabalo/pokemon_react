@@ -5,6 +5,7 @@ import { BsStars } from "react-icons/bs";
 import { IoMoon } from "react-icons/io5";
 import { IoSunny } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
+import {useMemo} from "react";
 
 export function Navbar() {
     const { theme, setTheme } = useTheme();
@@ -17,8 +18,13 @@ export function Navbar() {
         setShiny(shiny === "shiny" ? "notShiny" : "shiny")
     }
 
-    const textColor = theme === "dark" ? "text-white" : "text-black";
-    const borderColor = theme === "dark" ? "dark:border-white/10" : "border-black/10";
+    const textColor = useMemo(() =>
+            theme === "dark" ? "text-white" : "text-black"
+        , [theme]);
+
+    const borderColor = useMemo(() =>
+            theme === "dark" ? "dark:border-white/10" : "border-black/10"
+        , [theme]);
 
     return (
         <nav

@@ -1,10 +1,16 @@
 import { useTheme } from "../provider/themeProvider";
+import {useMemo} from "react";
 
 export function PokemonStatsDetail({ data }: { data: any }) {
     const { theme } = useTheme();
 
-    const textColor = theme === "dark" ? "text-white" : "text-black";
-    const cardColor = theme === "dark" ? "bg-zinc-800" : "bg-white";
+    const textColor = useMemo(() =>
+            theme === "dark" ? "text-white" : "text-black"
+        , [theme]);
+
+    const cardColor = useMemo(() =>
+            theme === "dark" ? "bg-zinc-800" : "bg-white"
+        , [theme]);
 
     return (
         <div className={`${cardColor} w-full p-4 rounded shadow`}>

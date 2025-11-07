@@ -1,11 +1,17 @@
 import { useTheme } from "../provider/themeProvider.tsx";
+import {useMemo} from "react";
 
 export function Footer() {
     const { theme } = useTheme();
 
-    const textColor = theme === "dark" ? "text-white" : "text-black";
-    const borderColor = theme === "dark" ? "dark:border-white/10" : "border-black/10";
-    
+    const textColor = useMemo(() =>
+            theme === "dark" ? "text-white" : "text-black"
+        , [theme]);
+
+    const borderColor = useMemo(() =>
+            theme === "dark" ? "dark:border-white/10" : "border-black/10"
+        , [theme]);
+
     return (
         <>
             <footer className='container'>

@@ -18,15 +18,19 @@ export function PokemonList() {
 
     const handlePrev = useCallback(() => {
         setOffset((prev) => Math.max(prev - limit, 0));
-    }, [offset]);
+    }, []);
 
     const handleNext = useCallback(() => {
         setOffset((prev) => prev + limit);
-    }, [offset]);
+    }, []);
 
-    const textColor = theme === "dark" ? "text-white" : "text-black";
+    const textColor = useMemo(() =>
+            theme === "dark" ? "text-white" : "text-black"
+        , [theme]);
 
-    const textColorHover = theme === "dark" ? "  hover:text-white" : "hover:text-black";
+    const textColorHover = useMemo(() =>
+            theme === "dark" ? "hover:text-white" : "hover:text-black"
+        , [theme]);
 
     const { data, loading } = useFetch(url);
 

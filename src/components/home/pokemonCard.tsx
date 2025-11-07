@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { useFavorites } from "../provider/favoriteProvider.tsx";
 import { useTheme } from "../provider/themeProvider.tsx";
 import { useShiny } from "../provider/shinyProvider.tsx";
-import { useMemo, useState } from "react";
+import {useCallback, useMemo, useState} from "react";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
 export function PokemonCard({ name, id }: { name: string, id: string }) {
@@ -17,15 +17,21 @@ export function PokemonCard({ name, id }: { name: string, id: string }) {
             : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`;
     }, [shiny, id]);
 
-    const handleClick = (pokemonId: string) => {
+    const handleClick = useCallback((pokemonId: string) => {
         setClicked(true);
         toggleFavorite(pokemonId);
         setTimeout(() => setClicked(false), 50);
-    };
+    }, [toggleFavorite]);
 
     const isFavorite = favorites.includes(id);
-    const textColor = theme === "dark" ? "text-white" : "text-black";
-    const cardColor = theme === "dark" ? "bg-zinc-800" : "bg-white";
+
+    const textColor = useMemo(() =>
+            theme === "dark" ? "text-white" : "text-black"
+        , [theme]);
+
+    const cardColor = useMemo(() =>
+            theme === "dark" ? "bg-zinc-800" : "bg-white"
+        , [theme]);
 
     return (
         <div className="w-full max-w-xs mx-auto">

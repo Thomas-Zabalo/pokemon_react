@@ -1,4 +1,4 @@
-import { PokemonCardFavorite } from "../components/favorite/pokemonCard.tsx";
+import { PokemonCardFavorite } from "../components/favorite/pokemonCardFavorite.tsx";
 import { Footer } from "../components/home/footer.tsx";
 import { useFavorites } from "../components/provider/favoriteProvider.tsx";
 import { useTheme } from "../components/provider/themeProvider.tsx";

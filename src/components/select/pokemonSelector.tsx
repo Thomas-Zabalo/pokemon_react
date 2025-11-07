@@ -1,16 +1,16 @@
-import { type ChangeEvent, type FormEvent, useState, useEffect, useRef, useMemo } from "react";
-import { useTheme } from "../provider/themeProvider";
+import {type ChangeEvent, type FormEvent, useEffect, useMemo, useRef, useState} from "react";
+import {useTheme} from "../provider/themeProvider";
 
 interface PokemonSelectorProps {
     handlePokemonSelect: (pokemon: string | undefined) => void;
 }
 
-export function PokemonSelector({ handlePokemonSelect }: PokemonSelectorProps) {
+export function PokemonSelector({handlePokemonSelect}: PokemonSelectorProps) {
     const [pokemon, setPokemon] = useState<string>("");
     const [pokemonList, setPokemonList] = useState<string[]>([]);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
-    const { theme } = useTheme();
+    const {theme} = useTheme();
 
     const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -83,10 +83,11 @@ export function PokemonSelector({ handlePokemonSelect }: PokemonSelectorProps) {
             .slice(0, 10);
     }, [pokemon, pokemonList]);
 
-    const bgColor =
-        theme === "dark"
-            ? "bg-zinc-800 text-white placeholder-gray-400 border-gray-600 shadow-md"
-            : "bg-white text-black placeholder-gray-500 border-gray-300 shadow-md";
+    const bgColor = useMemo(() =>
+            theme === "dark"
+                ? "bg-zinc-800 text-white placeholder-gray-400 border-gray-600 shadow-md"
+                : "bg-white text-black placeholder-gray-500 border-gray-300 shadow-md"
+        , [theme]);
 
     return (
         <div className="py-6 relative" ref={wrapperRef}>

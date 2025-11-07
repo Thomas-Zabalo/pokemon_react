@@ -35,8 +35,13 @@ export function PokemonCardDetail({ data }: { data: any }) {
             : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`;
     }, [shiny, id]);
 
-    const textColor = theme === "dark" ? "text-white" : "text-black";
-    const cardColor = theme === "dark" ? "bg-zinc-800" : "bg-white";
+    const textColor = useMemo(() =>
+            theme === "dark" ? "text-white" : "text-black"
+        , [theme]);
+
+    const cardColor = useMemo(() =>
+            theme === "dark" ? "bg-zinc-800" : "bg-white"
+        , [theme]);
 
     return (
         <div className={`${cardColor} lg:w-1/3 w-full p-4 rounded shadow`}>
