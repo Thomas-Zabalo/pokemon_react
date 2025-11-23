@@ -1,5 +1,5 @@
 import { useFetch } from "../../hooks/hook.tsx";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { PokemonCard } from "./pokemonCard.tsx";
 import { useTheme } from "../provider/themeProvider.tsx";
 
