@@ -1,21 +1,139 @@
-# React + TypeScript + Vite
+# Projet React Pokémon
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-While this project uses React, Vite supports many popular JS frameworks. [See all the supported frameworks](https://vitejs.dev/guide/#scaffolding-your-first-vite-project).
+## Objectif du projet
 
-## Deploy Your Own
+Cette application React permet de consulter des Pokémon via la **PokéAPI**. Elle offre les fonctionnalités suivantes :
 
-Deploy your own Vite project with Vercel.
+* Affichage des Pokémon avec nom, image et informations détaillées
+* Gestion des favoris stockés dans le `localStorage`
+* Activation du mode Shiny pour afficher les versions brillantes des Pokémon, également sauvegardé dans le `localStorage`
+* Recherche de Pokémon
+* Optimisation des performances grâce aux hooks : `useEffect`, `useCallback`, `useMemo`, `useRef`
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/framework-boilerplates/vite-react&template=vite-react)
+---
 
-_Live Example: https://vite-react-example.vercel.app_
+## Installation et lancement
 
-### Deploying From Your Terminal
+### 1. Cloner le projet
 
-You can deploy your new Vite project with a single command from your terminal using [Vercel CLI](https://vercel.com/download):
+```bash
+git clone https://github.com/Thomas-Zabalo/pokemon_react.git
+cd pokemon_react
+````
 
-```shell
-$ vercel
+### 2. Installer les dépendances
+
+```bash
+npm install
 ```
+
+### 3. Lancer le projet en développement
+
+```bash
+npm run dev
+```
+
+L’application sera accessible sur : `http://localhost:5173`
+
+---
+
+## Hooks utilisés
+
+### `useEffect` – Gestion des effets
+
+Permet de charger les Pokémon lors du montage du composant et de mettre à jour les données lorsque les dépendances changent.
+
+```js
+useEffect(() => {
+  fetchPokemons();
+}, []);
+```
+
+### `useCallback` – Mémoïsation de fonctions
+
+Évite de recréer certaines fonctions à chaque rendu, notamment `fetchPokemons`.
+
+```js
+const fetchPokemons = useCallback(async () => {
+  const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+  const data = await res.json();
+  setPokemons(data.results);
+}, []);
+```
+
+### `useMemo` – Optimisation des calculs
+
+Évite le recalcul des filtres ou tris à chaque rendu.
+
+```js
+const filteredPokemons = useMemo(() => {
+  return pokemons.filter(p => p.name.includes(search));
+}, [pokemons, search]);
+```
+
+### `useRef` – Référence au DOM
+
+Permet de manipuler un élément du DOM ou de stocker une valeur persistante sans provoquer de re-render.
+
+```js
+const searchRef = useRef();
+
+const focusSearch = () => {
+  searchRef.current.focus();
+};
+```
+
+---
+
+## LocalStorage
+
+### Favoris
+
+Les Pokémon favoris sont sauvegardés localement pour être conservés après un rafraîchissement.
+
+```js
+localStorage.setItem("favorites", JSON.stringify(favList));
+```
+
+### Shiny
+
+Le mode Shiny est également stocké pour chaque Pokémon ou globalement.
+
+```js
+localStorage.setItem("shiny", JSON.stringify(isShinyEnabled));
+```
+
+### Dark Mode
+
+Le thème de l’application est stocké dans le localStorage pour conserver la préférence utilisateur.
+
+```js
+localStorage.setItem("theme", selectedTheme);
+```
+
+---
+
+## API utilisée : PokéAPI
+
+L’API fournit les informations suivantes pour chaque Pokémon :
+
+* Nom
+* Numéro
+* Sprites (normal / shiny)
+* Types
+* Évolutions
+* Statistiques
+* Compétences
+
+Exemple de requête utilisée :
+
+```
+https://pokeapi.co/api/v2/pokemon
+```
+
+[Lien vers l'application](pokemonreact-seven.vercel.app)
