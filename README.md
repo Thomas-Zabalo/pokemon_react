@@ -137,3 +137,8 @@ https://pokeapi.co/api/v2/pokemon
 ```
 
 [Lien vers l'application](pokemonreact-seven.vercel.app)
+
+### Remarque sur le déploiement
+
+Il est possible que l’application rencontre des problèmes avec Vercel
+Si vous rencontrez des erreurs,lancer l’application en local
