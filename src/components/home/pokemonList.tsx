@@ -12,10 +12,6 @@ export function PokemonList() {
         return `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
     }, [offset, limit]);
 
-    useEffect(() => {
-        console.log(url);
-    }, [url])
-
     const handlePrev = useCallback(() => {
         setOffset((prev) => Math.max(prev - limit, 0));
     }, []);
